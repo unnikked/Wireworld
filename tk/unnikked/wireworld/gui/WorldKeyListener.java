@@ -47,7 +47,19 @@ public class WorldKeyListener extends KeyAdapter {
 		} else if(e.getKeyCode() == KeyEvent.VK_0) {
 			simulation.setMovesPerSecond(10);
 		} else if(e.getKeyChar() == '?') {
-			JOptionPane.showMessageDialog(worldGrid, "<html><u>Hello</u><html>", "About Wireworld ~ by unnikked", JOptionPane.INFORMATION_MESSAGE);
+			JOptionPane.showMessageDialog(worldGrid, "<html>With your mouse you can add Conductors by left-clicking on the grid " +
+					"\n" +
+					"(click again on a conductor to erase it), by righ-clicking you change the state of the grid respectively to " +
+					"\n" +
+					"Electron head, Electron tail and Conductor cyclically.\n" +
+					"\n" +
+					"By pressing enter you will manually compute a tick of the current generation.\n" +
+					"\n" +
+					"By pressing space you will start to compute next generations manually.\n" +
+					"\n" +
+					"By pressing numbers from 1 to 0 on your keyboard you can set ten different speed to the simulation.\n" +
+					"\n" +
+					"By pressing ? you will see instructions.<html>", "About Wireworld ~ by unnikked", JOptionPane.INFORMATION_MESSAGE);
 		}
 	}
 }

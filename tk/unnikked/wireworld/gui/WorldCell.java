@@ -33,6 +33,7 @@ public class WorldCell extends JLabel {
 			case ELECTRON_HEAD: setBackground(Color.BLUE); break;
 			case ELECTRON_TAIL: setBackground(Color.RED); break;
 			case CONDUCTOR: setBackground(Color.YELLOW); break;
+			case NOTE: setBackground(Color.GREEN); break;
 			default: setBackground(Color.BLACK);
 		}
 	}

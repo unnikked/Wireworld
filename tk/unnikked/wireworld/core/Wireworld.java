@@ -1,5 +1,7 @@
 package tk.unnikked.wireworld.core;
 
+import tk.unnikked.wireworld.gui.MakeSound;
+
 public class Wireworld {
 	private Grid gameGrid;
 
@@ -50,6 +52,17 @@ public class Wireworld {
 					case CONDUCTOR:
 						if (cell.getNeighbourgs() == 1 || cell.getNeighbourgs() == 2)
 							cell.setState(Cell.State.ELECTRON_HEAD);
+						break;
+					case NOTE:
+						if (cell.getNeighbourgs() == 1 || cell.getNeighbourgs() == 2) {
+							cell.setState(Cell.State.NOTE);
+							new Thread(new Runnable() {
+								@Override
+								public void run() {
+									new MakeSound().playSound("/tk/unnikked/wireworld/gui/SNARE_3.WAV");
+								}
+							}).start();
+						}
 						break;
 					default:
 				}

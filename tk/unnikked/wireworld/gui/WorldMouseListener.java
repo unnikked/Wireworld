@@ -29,8 +29,14 @@ public class WorldMouseListener extends MouseAdapter {
 				worldGrid.labelPressed(worldCell, Cell.State.ELECTRON_HEAD);
 			} else if (worldCell.getState() == Cell.State.ELECTRON_HEAD) {
 				worldGrid.labelPressed(worldCell, Cell.State.ELECTRON_TAIL);
+			} else if (worldCell.getState() == Cell.State.ELECTRON_TAIL) {
+				worldGrid.labelPressed(worldCell, Cell.State.NOTE);
 			} else {
 				worldGrid.labelPressed(worldCell, Cell.State.CONDUCTOR);
+			}
+		} else if(e.getButton() == MouseEvent.BUTTON2) {
+			if(worldCell.getState() == Cell.State.CONDUCTOR) {
+				worldGrid.labelPressed(worldCell, Cell.State.NOTE);
 			}
 		}
 	}

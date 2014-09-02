@@ -10,7 +10,8 @@ public class Cell {
 		EMPTY,
 		ELECTRON_HEAD,
 		ELECTRON_TAIL,
-		CONDUCTOR
+		CONDUCTOR,
+		NOTE
 	}
 
 	private int x, y;

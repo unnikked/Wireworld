@@ -60,6 +60,15 @@ public class Grid {
 					if(                           j - 1 > 0                  && grid[i][j - 1].getState()       == Cell.State.ELECTRON_HEAD) c++;
 					grid[i][j].setNeighbourgs(c);
 				}
+
+				if(grid[i][j].getState() == Cell.State.NOTE) {
+					int c = 0;
+					if(i - 1 > 0                                             && grid[i - 1][j].getState()       == Cell.State.ELECTRON_HEAD) c++;
+					if(                           j + 1 < grid[0].length - 1 && grid[i][j + 1].getState()       == Cell.State.ELECTRON_HEAD) c++;
+					if(i + 1 < grid.length - 1                               && grid[i + 1][j].getState()       == Cell.State.ELECTRON_HEAD) c++;
+					if(                           j - 1 > 0                  && grid[i][j - 1].getState()       == Cell.State.ELECTRON_HEAD) c++;
+					grid[i][j].setNeighbourgs(c);
+				}
 			}
 	}
 
