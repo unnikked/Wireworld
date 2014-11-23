@@ -1,4 +1,4 @@
-package tk.unnikked.wireworld.gui;
+package tk.unnikked.wireworld.mvc.model;
 
 import tk.unnikked.wireworld.core.Cell;
 

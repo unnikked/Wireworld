@@ -1,23 +1,24 @@
-package tk.unnikked.wireworld.gui;
+package tk.unnikked.wireworld.mvc.controller;
 
 import tk.unnikked.wireworld.core.Cell;
+import tk.unnikked.wireworld.mvc.model.WorldCell;
+import tk.unnikked.wireworld.mvc.view.WorldGrid;
 
+import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseMotionAdapter;
 
 /**
  * Created by nicola on 29/08/14.
  */
-public class WorldMouseMotionListener extends MouseMotionAdapter {
-
+public class WorldMouseListener extends MouseAdapter {
 	private WorldGrid worldGrid;
 
-	public WorldMouseMotionListener(WorldGrid worldGrid) {
+	public WorldMouseListener(WorldGrid worldGrid) {
 		this.worldGrid = worldGrid;
 	}
 
 	@Override
-	public void mouseDragged(MouseEvent e) {
+	public void mousePressed(MouseEvent e) {
 		WorldCell worldCell = (WorldCell) e.getSource();
 		if(e.getButton() == MouseEvent.BUTTON1) {
 			if(worldCell.getState() == Cell.State.CONDUCTOR) {

@@ -1,106 +1,81 @@
 package tk.unnikked.wireworld.core;
 
-public class Grid {
-	private Cell[][] grid;
+import java.io.Serializable;
+import java.util.Collection;
+import java.util.HashMap;
+
+public class Grid implements Serializable{
+	private HashMap<Coordinate, Cell> grid;
 
 	public Grid() {
-		this(32);
-	}
-
-	public Grid(int dimension) {
-		this(dimension, dimension);
-	}
-
-	public Grid(int dimensionX, int dimensionY) {
-		this.grid = new Cell[dimensionX][dimensionY];
-		init(dimensionX, dimensionY);
+		this.grid =  new HashMap<Coordinate, Cell>();
 	}
 
 	public Grid(Grid grid) {
 		this.grid = grid.grid;
 	}
 
-	private void init(int x, int y) {
-		for(int i = 0; i < x; i++)
-			for(int j = 0; j < y; j++)
-				grid[i][j] = new Cell();
-	}
-
-	public Cell[][] getGrid() {
+	public HashMap<Coordinate, Cell> getGrid() {
 		return grid;
 	}
 
 	public void setCellState(int x, int y, Cell.State state) {
-		grid[x][y].setState(state);
+		grid.put(new Coordinate(x, y), new Cell(state));
 	}
 
 	public Cell.State getCellState(int x, int y) {
-		return grid[x][y].getState();
+		Cell cell = grid.get(new Coordinate(x, y));
+		return cell != null ? cell.getState() : Cell.State.EMPTY;
 	}
 
 	public Cell getCell(int x, int y) {
-		return grid[x][y];
+		return grid.get(new Coordinate(x, y));
 	}
 
 	public void countNeighbourgs() {
-		for(int i = 0; i < grid.length; i++)
-			for(int j = 0; j < grid[0].length; j++) {
-				grid[i][j].setNeighbourgs(0); // resets counter
-				/* since only a conduction can become an electron head
-				   i count only neighbourgs for conductor */
-				if(grid[i][j].getState() == Cell.State.CONDUCTOR) {
-					int c = 0; // count variable
-					if(i - 1 > 0               && j - 1 > 0                  && grid[i - 1][j - 1].getState()   == Cell.State.ELECTRON_HEAD) c++;
-					if(i - 1 > 0                                             && grid[i - 1][j].getState()       == Cell.State.ELECTRON_HEAD) c++;
-					if(i - 1 > 0               && j + 1 < grid[0].length - 1 && grid[i - 1][j + 1].getState()   == Cell.State.ELECTRON_HEAD) c++;
-					if(                           j + 1 < grid[0].length - 1 && grid[i][j + 1].getState()       == Cell.State.ELECTRON_HEAD) c++;
-					if(i + 1 < grid.length - 1 && j + 1 < grid[0].length - 1 && grid[i + 1][j + 1].getState()   == Cell.State.ELECTRON_HEAD) c++;
-					if(i + 1 < grid.length - 1                               && grid[i + 1][j].getState()       == Cell.State.ELECTRON_HEAD) c++;
-					if(i + 1 < grid.length - 1 && j - 1 > 0                  && grid[i + 1][j - 1].getState()   == Cell.State.ELECTRON_HEAD) c++;
-					if(                           j - 1 > 0                  && grid[i][j - 1].getState()       == Cell.State.ELECTRON_HEAD) c++;
-					grid[i][j].setNeighbourgs(c);
-				}
-			}
-	}
-
-	public boolean equals(Object obj) {
-		if(obj == null) return false;
-		if(!(obj instanceof Grid)) return false;
-		if(this == obj) return true;
-		Grid grid = (Grid) obj;
-		if(this.grid.length != grid.grid.length) return false;
-		if(this.grid[0].length != grid.grid[0].length) return false;
-		for(int i = 0; i < this.grid.length; i++) {
-			for(int j = 0; j < this.grid[0].length; j++) {
-				if(!this.grid[i][j].equals(grid.grid[i][j])) return false;
+		Collection<Coordinate> coordinates = grid.keySet();
+		for(Coordinate c : coordinates) {
+			Cell cell = grid.get(c); // resets counter
+			cell.setNeighbourgs(0);
+			// since only a conduction can become an electron head
+			//   i count only neighbours for conductor
+			if(cell.getState() == Cell.State.CONDUCTOR) {
+				int n = 0;
+				if(getCellState(c.getX() - 1, c.getY() - 1) == Cell.State.ELECTRON_HEAD) n++;
+				if(getCellState(c.getX() - 1, c.getY()) == Cell.State.ELECTRON_HEAD) n++;
+				if(getCellState(c.getX() - 1, c.getY() + 1) == Cell.State.ELECTRON_HEAD) n++;
+				if(getCellState(c.getX(), c.getY() + 1) == Cell.State.ELECTRON_HEAD) n++;
+				if(getCellState(c.getX() + 1, c.getY() + 1) == Cell.State.ELECTRON_HEAD) n++;
+				if(getCellState(c.getX() + 1, c.getY()) == Cell.State.ELECTRON_HEAD) n++;
+				if(getCellState(c.getX() + 1, c.getY() - 1) == Cell.State.ELECTRON_HEAD) n++;
+				if(getCellState(c.getX(), c.getY() - 1) == Cell.State.ELECTRON_HEAD) n++;
+				cell.setNeighbourgs(n);
+				grid.put(c, cell);
 			}
 		}
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (!(o instanceof Grid)) return false;
+
+		Grid grid1 = (Grid) o;
+
+		if (!grid.equals(grid1.grid)) return false;
+
 		return true;
 	}
 
+	@Override
 	public int hashCode() {
-		final int PRIME = 11;
-		int hashCode = 0;
-		for(Cell[] aRow : grid)
-			for(Cell cell : aRow)
-				hashCode += cell.hashCode() * PRIME;
-		return hashCode;
+		return grid.hashCode();
 	}
 
+	@Override
 	public String toString() {
-		StringBuilder sb = new StringBuilder();
-		for(Cell[] aRow : grid) {
-			for (Cell cell : aRow) {
-				switch (cell.getState()) {
-					case EMPTY: sb.append('E'); break;
-					case ELECTRON_HEAD: sb.append('H'); break;
-					case ELECTRON_TAIL: sb.append('t'); break;
-					case CONDUCTOR: sb.append('C'); break;
-				}
-			}
-			sb.append('\n');
-		}
-		return sb.toString();
+		return "Grid{" +
+				"grid=" + grid +
+				'}';
 	}
-
 }

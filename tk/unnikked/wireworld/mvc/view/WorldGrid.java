@@ -1,21 +1,24 @@
-package tk.unnikked.wireworld.gui;
+package tk.unnikked.wireworld.mvc.view;
 
 import tk.unnikked.wireworld.core.Cell;
+import tk.unnikked.wireworld.core.Coordinate;
 import tk.unnikked.wireworld.core.Grid;
-import tk.unnikked.wireworld.core.Wireworld;
+import tk.unnikked.wireworld.utils.Pair;
+import tk.unnikked.wireworld.mvc.model.WorldCell;
+import tk.unnikked.wireworld.mvc.controller.WorldMouseListener;
 
 import javax.swing.*;
 import java.awt.*;
 import java.util.Observable;
 import java.util.Observer;
 
-public class WorldGrid extends JPanel {
+public class WorldGrid extends JPanel implements Observer {
 	private WorldCell[][] worldGrid;
-	private Wireworld wireworld;
+	private ChangeGridSubject observable;
 
 	public WorldGrid(int row, int col, int cellWidth) {
 		worldGrid = new WorldCell[row][col];
-		wireworld = new Wireworld(row, col);
+		observable = new ChangeGridSubject();
 
 		WorldMouseListener mouseListener = new WorldMouseListener(this);
 
@@ -34,13 +37,17 @@ public class WorldGrid extends JPanel {
 		}
 	}
 
-	public void labelPressed(WorldCell worldCell, Cell.State state) {
-		worldCell.setState(state);
-		wireworld.setCell(worldCell.getRow(), worldCell.getCol(), state);
+	public ChangeGridSubject getChangeGridObserver() {
+		return this.observable;
 	}
 
-	public void update() {
-		Grid grid = wireworld.getGrid();
+	public void labelPressed(WorldCell worldCell, Cell.State state) {
+		worldCell.setState(state);
+		observable.setChanged();
+		observable.notifyObservers(new Pair(new Coordinate(worldCell.getRow(), worldCell.getCol()), new Cell(state)));
+	}
+
+	public void update(Grid grid) {
 		for(int i = 0; i < worldGrid.length; i++) {
 			for(int j = 0; j < worldGrid[0].length; j++) {
 				labelPressed(worldGrid[i][j], grid.getCellState(i, j));
@@ -48,8 +55,10 @@ public class WorldGrid extends JPanel {
 		}
 	}
 
-	public void tick() {
-		wireworld.tick();
-		update();
+	@Override
+	public void update(Observable observable, Object o) {
+		if(o instanceof Grid) {
+			update((Grid) o);
+		}
 	}
 }

@@ -1,11 +1,13 @@
 package tk.unnikked.wireworld.core;
 
+import java.io.Serializable;
+
 /**
  * A wireworld Cell can assume one of four state in
  * a generation: EMPTY, ELECTRON_HEAD, ELECTRON_TAIL
  * and CONDUCTOR
  */
-public class Cell {
+public class Cell implements Serializable {
 	public static enum State {
 		EMPTY,
 		ELECTRON_HEAD,

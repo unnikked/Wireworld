@@ -30,6 +30,21 @@ By pressing numbers from `1` to `0` on your keyboard you can set ten different s
 
 By pressing `?` you will see instructions.
 
+### Screenshots
+
+![Main View](http://i.imgur.com/e8I5LcQ.png)
+
+An example of the *world*. A `xor` gate and two clock generator.
+
+![Export View](http://i.imgur.com/Ski5XSF.png)
+
+Basic export dialog. 
+
+![Import View](http://i.imgur.com/adErRFu.png)
+
+Basic import dialog.
+
 # To Do
-- Import export function
+- ~~ Import export function ~~
 - More customization on user interface
+- Mouse drag support **new**
