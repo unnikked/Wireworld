@@ -47,4 +47,4 @@ Basic import dialog.
 # To Do
 - ~~Import export function~~
 - More customization on user interface
-- Mouse drag support **new**
+- ~~Mouse drag support~~
