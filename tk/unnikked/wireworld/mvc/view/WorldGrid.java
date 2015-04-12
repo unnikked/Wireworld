@@ -3,9 +3,9 @@ package tk.unnikked.wireworld.mvc.view;
 import tk.unnikked.wireworld.core.Cell;
 import tk.unnikked.wireworld.core.Coordinate;
 import tk.unnikked.wireworld.core.Grid;
-import tk.unnikked.wireworld.utils.Pair;
-import tk.unnikked.wireworld.mvc.model.WorldCell;
 import tk.unnikked.wireworld.mvc.controller.WorldMouseListener;
+import tk.unnikked.wireworld.mvc.model.WorldCell;
+import tk.unnikked.wireworld.utils.Pair;
 
 import javax.swing.*;
 import java.awt.*;
@@ -30,6 +30,7 @@ public class WorldGrid extends JPanel implements Observer {
 			for(int j = 0; j < col; j++) {
 				worldGrid[i][j] = new WorldCell(i, j);
 				worldGrid[i][j].setOpaque(true);
+				worldGrid[i][j].setBorder(BorderFactory.createLineBorder(Color.DARK_GRAY, 1));
 				worldGrid[i][j].addMouseListener(mouseListener);
 				worldGrid[i][j].setPreferredSize(cellSize);
 				add(worldGrid[i][j]);
